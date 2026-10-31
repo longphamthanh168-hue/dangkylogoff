@@ -418,7 +418,11 @@ $('#impF').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)
 /* ---- studio ---- */
 let sImg=null;const ids=['shape','bord','bgk','cor','c1','c2','g1','g2','w','scope'];
 const cur=()=>({shape:$('#shape').value,border:$('#bord').value,bg:$('#bgk').value,cor:$('#cor').value,c1:$('#c1').value,c2:$('#c2').value,g1:$('#g1').value,g2:$('#g2').value,w:$('#w').value,scope:$('#scope').value});
-function demo(){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,256,256);g.addColorStop(0,'#ecc9bc');g.addColorStop(1,'#b9826f');x.fillStyle=g;x.fillRect(40,40,176,176);x.fillStyle='#221d19';x.font='900 70px sans-serif';x.textAlign='center';x.fillText('NLTL',128,148);return c}
+function demo(){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');
+  x.fillStyle='#f7f4ec';x.fillRect(0,0,256,256); // nền kem giống logo
+  const im=document.querySelector('img.logo'); // logo NLTL STUDIO của banner làm ảnh mẫu
+  if(im&&im.naturalWidth){const k=Math.min(236/im.naturalWidth,236/im.naturalHeight),w=im.naturalWidth*k,h=im.naturalHeight*k;x.drawImage(im,(256-w)/2,(256-h)/2,w,h)}
+  return c}
 function prev(){const c=$('#cv').getContext('2d');c.clearRect(0,0,256,256);c.drawImage(render(sImg||demo(),cur()),0,0)}
 ids.forEach(k=>$('#'+k).addEventListener('input',prev));
 $('#bStudio').onclick=()=>{open('#mStudio');tplList();prev()};
