@@ -262,8 +262,12 @@ code{background:var(--s2);padding:1px 6px;border-radius:6px;font-size:12px}
 <div id="toast"></div>
 
 <script>
-const USE_API=false; // htweb.js tự đổi thành true khi phục vụ trang này
-const API_BASE=''; // vd: 'https://ten-mien-cua-ban.com' – nối backend bot
+const ALLOWED_API=['https://bot.ten-mien-cua-ban.com']; // SỬA: địa chỉ https của bot trên VPS ([] = chấp nhận mọi https, kém an toàn)
+const _qs=new URLSearchParams(location.search);
+const _api=(_qs.get('api')||'').replace(/\/$/,'');
+const _okApi=/^https:\/\/[\w.-]+(:\d+)?$/i.test(_api)&&(ALLOWED_API.length===0||ALLOWED_API.includes(_api));
+const USE_API=!!(_qs.get('token')&&_okApi); // có token + api hợp lệ → lưu về bot
+const API_BASE=USE_API?_api:'';
 const DRIVE_KEY=''; // (tuỳ chọn) Google API key có bật Drive API, để nhập folder Drive trực tiếp không cần backend
 const CMD='ht web'; // lệnh bot hiển thị trong phần Hướng dẫn (phải khớp với lệnh thật của bot)
 const HOME_URL=''; // link nút "Trang chính" (để trống = ẩn nút), vd: 'https://ten-mien-cua-ban.com'
