@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090a0f">
+<meta name="robots" content="noindex,nofollow">
+<title>HT NEXUS – Quản lý team HT</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23c8ff3d'/%3E%3Ctext x='32' y='42' font-size='28' font-weight='900' text-anchor='middle' font-family='sans-serif' fill='%230a0b10'%3EHT%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090a0f;--s1:#0e1017;--s2:#141725;--bg2:#10121b;--card:#0f1119;--line:#22263a;--tx:#eceef8;--mut:#7f85a6;--a:#c8ff3d;--b:#7a6bff;--onA:#0a0b10;--ok:#3bffb0;--bad:#ff5470;--inp:#0b0d14;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f4f5fb;--s1:#fff;--s2:#f0f1f9;--bg2:#fff;--card:#fff;--line:#e1e4f1;--tx:#14172b;--mut:#6a7091;--a:#5b3df5;--b:#e0409a;--onA:#fff;--inp:#fff;color-scheme:light}}
+:root[data-theme="light"]{--bg:#f4f5fb;--s1:#fff;--s2:#f0f1f9;--bg2:#fff;--card:#fff;--line:#e1e4f1;--tx:#14172b;--mut:#6a7091;--a:#5b3df5;--b:#e0409a;--onA:#fff;--inp:#fff;color-scheme:light}
+:root[data-theme="dark"]{color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Be Vietnam Pro',system-ui,sans-serif;background:radial-gradient(700px 380px at 85% -8%,color-mix(in srgb,var(--b) 18%,transparent),transparent),radial-gradient(600px 360px at 0 100%,color-mix(in srgb,var(--a) 9%,transparent),transparent),var(--bg);color:var(--tx);min-height:100vh;-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.app{display:grid;grid-template-columns:268px minmax(0,1fr);min-height:100vh}
+aside{position:sticky;top:0;height:100vh;padding:24px 16px;border-right:1px solid var(--line);background:var(--s1);display:flex;flex-direction:column;gap:4px;overflow:auto}
+.brand{display:flex;gap:11px;align-items:center;margin:0 8px 24px}
+.mark{width:40px;height:40px;border-radius:12px;background:var(--a);color:var(--onA);display:grid;place-items:center;font:900 15px Orbitron,sans-serif;box-shadow:0 0 0 4px color-mix(in srgb,var(--a) 18%,transparent);animation:pl 3s ease-in-out infinite}
+@keyframes pl{50%{box-shadow:0 0 0 9px color-mix(in srgb,var(--a) 4%,transparent)}}
+.brand b{font:900 16px Orbitron,sans-serif;letter-spacing:1.5px}.brand small{display:block;color:var(--mut);font-size:11px;margin-top:2px}
+.sec{font-size:10px;letter-spacing:1.8px;color:var(--mut);margin:22px 12px 6px;text-transform:uppercase;font-weight:700}
+button{font:inherit;color:var(--tx);cursor:pointer;border:1px solid var(--line);background:var(--s2);padding:9px 14px;border-radius:11px;font-size:13px;font-weight:600;transition:transform .2s,background .2s,border-color .2s,box-shadow .2s;position:relative;overflow:hidden}
+button:hover{border-color:var(--a)}button:active{transform:scale(.97)}
+.nv{width:100%;text-align:left;display:flex;gap:11px;align-items:center;border:0;background:transparent;padding:11px 12px;color:var(--mut);font-weight:500}
+.nv:hover{background:var(--s2);color:var(--tx)}
+.nv.main{background:var(--a);color:var(--onA);font-weight:700;margin-bottom:6px}
+.nv.main:hover{background:var(--a);filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 8px 24px color-mix(in srgb,var(--a) 35%,transparent)}
+.nv.rd:hover{color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,transparent)}
+.sess{margin-top:auto;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--s2);display:flex;flex-direction:column;gap:10px}
+.r2{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mut)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok);animation:bl 1.6s infinite}@keyframes bl{50%{opacity:.35}}
+.tm{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--mut)}.tm b{font:700 20px ui-monospace,Menlo,monospace;color:var(--tx)}
+main{padding:30px clamp(16px,3vw,44px) 70px;min-width:0}
+.top{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-end;justify-content:space-between;margin-bottom:22px;animation:up .5s both}
+h1{margin:0;font-size:28px;letter-spacing:-.5px}.top p{margin:6px 0 0;color:var(--mut);font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--inp);border:1px solid var(--line);border-radius:11px;padding:10px 12px;font-size:13px;width:100%;outline:0;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--a);box-shadow:0 0 0 3px color-mix(in srgb,var(--a) 18%,transparent)}
+input[type=color]{padding:2px;height:38px}
+.top input[type=search]{width:250px}.top select{width:80px}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:18px}
+.card{border:1px solid var(--line);background:var(--card);border-radius:18px}
+.stat{padding:18px 20px;position:relative;overflow:hidden;animation:up .5s both;transition:transform .25s,border-color .25s}
+.stat:nth-child(2){animation-delay:.07s}.stat:nth-child(3){animation-delay:.14s}.stat:nth-child(4){animation-delay:.21s}
+.stat:hover{transform:translateY(-3px);border-color:var(--a)}
+.stat::before{content:'';position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;background:var(--a);opacity:.08;transition:.4s}.stat:hover::before{transform:scale(1.8);opacity:.14}
+.stat span{display:block;color:var(--mut);font-size:12px;font-weight:600}
+.stat b{display:block;margin-top:8px;font:700 34px ui-monospace,Menlo,monospace;letter-spacing:-1px}
+.list{animation:up .5s .25s both;overflow:hidden}
+.tw{overflow-x:auto;padding:6px 14px 0}
+table{width:100%;border-collapse:separate;border-spacing:0 8px;min-width:880px}
+th{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--mut);text-align:left;padding:8px 12px;font-weight:700}
+td{padding:10px 12px;background:var(--s2);border-top:1px solid transparent;border-bottom:1px solid transparent;vertical-align:middle;transition:.2s}
+td:first-child{border-radius:14px 0 0 14px;color:var(--mut);font:600 13px ui-monospace,Menlo,monospace;width:56px}td:last-child{border-radius:0 14px 14px 0}
+tbody tr{animation:fi .4s both}@keyframes fi{from{opacity:0;transform:translateX(-10px)}}
+tbody tr:nth-child(2){animation-delay:.04s}tbody tr:nth-child(3){animation-delay:.08s}tbody tr:nth-child(4){animation-delay:.12s}tbody tr:nth-child(n+5){animation-delay:.16s}
+tbody tr:hover td{border-color:var(--line);background:color-mix(in srgb,var(--a) 6%,var(--s2))}
+tbody tr:hover td:first-child{color:var(--a)}
+tbody input:not([type=file]){background:transparent;border-color:transparent;padding:9px 10px}
+tbody tr:hover input:not([type=file]){border-color:var(--line);background:var(--inp)}
+tbody input[data-f=name]{font-weight:700;font-size:14px}tbody input[data-f=ids],tbody input[data-f=logo]{font-family:ui-monospace,Menlo,monospace;font-size:12px}
+input[type=file]{padding:6px;font-size:11px;color:var(--mut)}
+.pv{width:56px;height:56px;border-radius:15px;background:repeating-conic-gradient(#8885 0 25%,transparent 0 50%) 0 0/12px 12px;object-fit:contain;border:1px solid var(--line);transition:.3s;display:block}
+.pv:hover{transform:scale(1.4) rotate(-4deg);position:relative;z-index:3;box-shadow:0 10px 30px rgba(0,0,0,.45);border-color:var(--a)}
+.sm{padding:6px 11px;font-size:12px}
+.dan{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,transparent);background:transparent}.dan:hover{background:var(--bad);color:#fff;border-color:var(--bad)}
+.pri{background:var(--a);color:var(--onA);border:0}.pri:hover{filter:brightness(1.08);box-shadow:0 8px 24px color-mix(in srgb,var(--a) 30%,transparent)}
+.empty{text-align:center;color:var(--mut);padding:56px 10px!important;border-radius:14px!important}
+.pg{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 16px;color:var(--mut);font-size:13px}
+.rp{position:absolute;width:10px;height:10px;margin:-5px;border-radius:50%;background:rgba(255,255,255,.45);animation:rp .6s ease-out forwards;pointer-events:none}@keyframes rp{to{transform:scale(22);opacity:0}}
+.ov{position:fixed;inset:0;background:rgba(3,4,10,.7);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.ov.on{opacity:1;visibility:visible}
+.md{width:min(720px,100%);max-height:90vh;overflow:auto;padding:26px;transform:scale(.94) translateY(14px);transition:transform .35s cubic-bezier(.2,.9,.3,1.2);background:var(--bg2)}
+.ov.on .md{transform:none}.md.lg{width:min(960px,100%)}
+.md h2{margin:0 0 4px;font-size:21px;letter-spacing:-.3px}.md p{color:var(--mut);font-size:13px;margin:0 0 14px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+label{display:block;font-size:12px;color:var(--mut);margin:12px 0 5px;font-weight:600}
+textarea{min-height:130px;font-family:ui-monospace,Menlo,monospace}
+.acts{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.step{padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--s2);transition:.25s}.step:hover{transform:translateY(-3px);border-color:var(--a)}
+.step i{font:900 24px Orbitron,sans-serif;color:var(--a);font-style:normal}.step h4{margin:8px 0 4px}
+.studio{display:grid;grid-template-columns:260px 1fr;gap:20px}
+canvas#cv{width:100%;max-width:260px;aspect-ratio:1;border-radius:16px;border:1px solid var(--line);background:repeating-conic-gradient(#8885 0 25%,transparent 0 50%) 0 0/16px 16px}
+.tp{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.tp button{padding:5px 10px;font-size:12px}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:99;display:flex;flex-direction:column;gap:8px;align-items:center}
+.t{padding:11px 20px;border-radius:12px;background:var(--tx);color:var(--bg);font-size:13px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.4);animation:up .3s both}
+.note{font-size:12px;color:var(--mut)}
+code{background:var(--s2);padding:1px 6px;border-radius:6px;font-size:12px}
+.badge{display:inline-block;padding:3px 9px;border-radius:99px;font-size:11px;font-weight:700;background:color-mix(in srgb,var(--a) 16%,transparent);color:var(--a);margin-left:8px;vertical-align:middle}
+::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+@media(max-width:860px){.app{grid-template-columns:1fr}aside{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line);flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px;padding:14px}.brand{margin:0 8px 0 0}.nv{width:auto;padding:9px 12px}.sec{display:none}.sess{margin:6px 0 0;width:100%;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:wrap}.top input[type=search]{width:100%}.studio{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+  <div class="brand"><div class="mark">HT</div><div><b>HT NEXUS</b><small>Team manager</small></div></div>
+  <button class="nv main" id="bAdd">＋ Thêm team</button>
+  <button class="nv" id="bDrive">☁ Thêm từ Drive</button>
+  <button class="nv" id="bStudio">🎨 Studio mẫu logo</button>
+  <button class="nv" id="bExp">⬇ Xuất sao lưu (JSON)</button>
+  <button class="nv" id="bImp">⬆ Nhập sao lưu (JSON)</button>
+  <input type="file" id="impF" accept="application/json,.json" hidden>
+  <button class="nv" id="bGuide">📖 Hướng dẫn</button>
+  <div class="sec">Vùng nguy hiểm</div>
+  <button class="nv rd" id="dID">⌫ Xóa tất cả ID</button>
+  <button class="nv rd" id="dLogo">🖼 Xóa tất cả logo</button>
+  <button class="nv rd" id="dTeam">🗑 Xóa tất cả team</button>
+  <div class="sess">
+    <div class="r2"><i class="dot"></i><span id="tk">Token</span></div>
+    <div class="tm"><span>Link hết hạn sau</span><b id="cd">24:00:00</b></div>
+    <div class="note" id="modeNote">🔒 Link riêng, không chuyển tiếp cho người khác.</div>
+    <button id="th">◐ Đổi giao diện sáng/tối</button>
+  </div>
+</aside>
+<main>
+  <div class="top">
+    <div><h1>Quản lý team HT<span class="badge" id="mode">DEMO</span></h1><p>Sửa trực tiếp từng dòng. Dùng tìm kiếm và số lượng hiển thị để quản lý nhanh.</p></div>
+    <div class="row"><input type="search" id="q" placeholder="Tìm tên team hoặc ID..."><select id="per"><option>10</option><option>20</option><option>50</option><option>100</option></select></div>
+  </div>
+  <div class="stats">
+    <div class="card stat"><span>Tổng team</span><b id="s1">0</b></div>
+    <div class="card stat"><span>ID đã nhập</span><b id="s2">0</b></div>
+    <div class="card stat"><span>Có logo</span><b id="s3">0</b></div>
+    <div class="card stat"><span>Mẫu đã lưu</span><b id="s4">0</b></div>
+  </div>
+  <div class="card list">
+    <div class="tw"><table>
+      <thead><tr><th>STT</th><th>Preview</th><th>Tên team</th><th>ID</th><th>Link logo</th><th>Thay logo</th><th>Thao tác</th></tr></thead>
+      <tbody id="tb"></tbody>
+    </table></div>
+    <div class="pg"><span id="pi"></span><div class="row"><button class="sm" id="pp">← Trước</button><button class="sm" id="pn">Sau →</button></div></div>
+  </div>
+</main>
+</div>
+
+<!-- Add teams -->
+<div class="ov" id="mAdd"><div class="card md">
+  <h2>Thêm nhiều team</h2><p>Mỗi team một dòng: <b>Tên team | ID1, ID2</b> (hoặc dùng dấu - hay ,). Có thể chỉ nhập tên team.</p>
+  <textarea id="aTx" placeholder="Team Alpha | 123456, 789012&#10;Team Beta - 555666&#10;Team Gamma"></textarea>
+  <label>Chọn nhiều logo theo đúng STT dòng</label>
+  <input type="file" id="aFiles" accept="image/*" multiple>
+  <div class="note" id="aInfo">Chưa chọn logo.</div>
+  <div class="g2"><div><label>Kiểu xử lý logo</label>
+    <select id="aMode"><option value="orig">Logo gốc</option><option value="nobg">Xóa nền</option><option value="circle">Tròn</option><option value="flag">Viền cờ Việt Nam</option></select></div>
+  <div><label>Mẫu đã lưu (ghi đè kiểu xử lý)</label><select id="aTpl"></select></div></div>
+  <div class="acts"><button id="aNo">Hủy</button><button class="pri" id="aOk">Xác nhận thêm</button></div>
+</div></div>
+
+<!-- Drive -->
+<div class="ov" id="mDrive"><div class="card md">
+  <h2>Thêm team từ Google Drive</h2><p>Folder phải bật quyền “Bất kỳ ai có liên kết”. Tên file ảnh sẽ được dùng làm tên team.</p>
+  <label>Link folder Google Drive</label><input id="dLink" placeholder="https://drive.google.com/drive/folders/...">
+  <div class="note">Cách chạy: điền <code>DRIVE_KEY</code> (Google API key, bật Drive API) hoặc <code>API_BASE</code> (backend bot, endpoint <code>POST /api/ht/drive</code>) trong mã trang.</div>
+  <div class="acts"><button id="dNo">Hủy</button><button class="pri" id="dOk">Bắt đầu thêm</button></div>
+</div></div>
+
+<!-- Guide -->
+<div class="ov" id="mGuide"><div class="card md lg">
+  <h2>Hướng dẫn thêm nhiều team</h2><p>4 bước nhanh gọn.</p>
+  <div class="steps">
+    <div class="step"><i>01</i><h4>Nhận link</h4><span class="note">Dùng lệnh <b>ht web</b> trong bot, link riêng được gửi qua tin nhắn.</span></div>
+    <div class="step"><i>02</i><h4>Nhập danh sách</h4><span class="note">Mỗi team một dòng theo cú pháp Tên | ID.</span></div>
+    <div class="step"><i>03</i><h4>Ghép logo</h4><span class="note">Chọn nhiều ảnh, thứ tự ảnh khớp STT dòng.</span></div>
+    <div class="step"><i>04</i><h4>Xác nhận</h4><span class="note">Kiểm tra lại và chờ báo thành công.</span></div>
+  </div>
+  <div class="acts"><button class="pri" data-close>Đóng</button></div>
+</div></div>
+
+<!-- Studio -->
+<div class="ov" id="mStudio"><div class="card md lg">
+  <h2>Studio mẫu logo</h2><p>Chọn ảnh hoặc dùng ảnh mẫu, phối kiểu rồi lưu.</p>
+  <div class="studio">
+    <div><canvas id="cv" width="256" height="256"></canvas>
+      <label>Ảnh logo của bạn</label><input type="file" id="sFile" accept="image/*">
+      <button class="sm" id="sDemo" style="margin-top:8px;width:100%">Tạo thử để coi</button>
+      <div class="tp" id="tpl"></div></div>
+    <div>
+      <label>Tên mẫu</label><input id="sName" value="Mẫu của tôi">
+      <div class="g2">
+        <div><label>Hình dạng</label><select id="shape"><option value="circle">Tròn</option><option value="round">Vuông bo</option><option value="square">Vuông</option><option value="hex">Lục giác</option><option value="oct">Bát giác</option><option value="shield">Khiên</option><option value="diamond">Kim cương</option><option value="star">Ngôi sao</option></select></div>
+        <div><label>Viền</label><select id="bord"><option value="none">Không viền</option><option value="single" selected>Đơn</option><option value="double">Đôi</option><option value="neon">Neon</option><option value="flag">Nét cờ</option></select></div>
+        <div><label>Nền</label><select id="bgk"><option value="none">Trong suốt</option><option value="solid">Màu đơn</option><option value="grad" selected>Chuyển sắc</option><option value="dark">Tối</option><option value="grid">Lưới</option><option value="vn">Cờ Việt Nam</option></select></div>
+        <div><label>Góc trang trí</label><select id="cor"><option value="none">Không</option><option value="flag">Cờ</option><option value="star">Sao</option><option value="vf">Viewfinder</option></select></div>
+      </div>
+      <div class="g2">
+        <div><label>Màu viền</label><input type="color" id="c1" value="#00e5ff"></div>
+        <div><label>Màu phụ</label><input type="color" id="c2" value="#ff2bd6"></div>
+        <div><label>Màu nền</label><input type="color" id="g1" value="#14143a"></div>
+        <div><label>Màu nền phụ</label><input type="color" id="g2" value="#3a1450"></div>
+        <div><label>Độ dày viền</label><input type="range" id="w" min="2" max="24" value="8"></div>
+        <div><label>Phạm vi nền</label><select id="scope"><option value="in">Trong khung</option><option value="all">Toàn ảnh</option></select></div>
+      </div>
+      <div class="acts"><button id="sDef">Đặt làm mặc định</button><button class="pri" id="sSave">Lưu mẫu</button><button data-close>Đóng</button></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- Confirm -->
+<div class="ov" id="mCf"><div class="card md" style="width:min(420px,100%)">
+  <h2>Xác nhận thao tác</h2><p id="cfT"></p>
+  <div class="acts"><button id="cfNo">Hủy</button><button class="pri dan" id="cfOk" style="color:#fff;background:var(--bad)">Xác nhận xóa</button></div>
+</div></div>
+<div id="toast"></div>
+
+<script>
+const USE_API=false; // htweb.js tự đổi thành true khi phục vụ trang này
+const API_BASE=''; // vd: 'https://ten-mien-cua-ban.com' – để trống = chạy demo, lưu trong trình duyệt
+const DRIVE_KEY=''; // (tuỳ chọn) Google API key có bật Drive API, để nhập folder Drive trực tiếp không cần backend
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let teams=[],tpls=[],defTpl=null,page=1,files=[];
+function load(){try{teams=JSON.parse(localStorage.getItem('ht_teams')||'[]');tpls=JSON.parse(localStorage.getItem('ht_tpls')||'[]');defTpl=localStorage.getItem('ht_def')}catch(e){}
+  if(!Array.isArray(teams))teams=[];if(!Array.isArray(tpls))tpls=[];
+  teams.forEach(t=>{t.name=t.name||'';t.ids=Array.isArray(t.ids)?t.ids:[];t.logo=t.logo||''})}
+function save(){if(USE_API){push();return}try{localStorage.setItem('ht_teams',JSON.stringify(teams));localStorage.setItem('ht_tpls',JSON.stringify(tpls));if(defTpl)localStorage.setItem('ht_def',defTpl);else localStorage.removeItem('ht_def')}catch(e){toast('Bộ nhớ trình duyệt đầy, hãy xóa bớt logo')}}
+function toast(m){const d=document.createElement('div');d.className='t';d.textContent=m;$('#toast').append(d);setTimeout(()=>d.remove(),2800)}
+const open=s=>$(s).classList.add('on'),close=s=>$(s).classList.remove('on');
+function confirmBox(t){return new Promise(r=>{$('#cfT').textContent=t;open('#mCf');$('#cfOk').onclick=()=>{close('#mCf');r(true)};$('#cfNo').onclick=()=>{close('#mCf');r(false)}})}
+$$('[data-close]').forEach(b=>b.onclick=()=>b.closest('.ov').classList.remove('on'));
+$$('.ov').forEach(o=>o.addEventListener('mousedown',e=>{if(e.target===o)o.classList.remove('on')}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.ov.on').forEach(o=>o.classList.remove('on'))});
+
+/* ---- mode / token & countdown ---- */
+const tok=new URLSearchParams(location.search).get('token')||'demo';
+$('#tk').textContent='Token: '+tok.slice(0,6)+'••••';
+$('#mode').textContent=USE_API?'ONLINE':'DEMO';
+if(!USE_API)$('#modeNote').textContent='💾 Chế độ demo: dữ liệu lưu trong trình duyệt này. Dùng Xuất/Nhập JSON để sao lưu.';
+let exp=+localStorage.getItem('ht_exp')||0;if(exp<Date.now()){exp=Date.now()+864e5;try{localStorage.setItem('ht_exp',exp)}catch(e){}}
+setInterval(()=>{const s=Math.max(0,(exp-Date.now())/1e3|0),f=n=>String(n).padStart(2,'0');$('#cd').textContent=f(s/3600|0)+':'+f(s/60%60|0)+':'+f(s%60)},1000);
+$('#th').onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':!matchMedia('(prefers-color-scheme:light)').matches;r.dataset.theme=dark?'light':'dark'};
+
+/* ---- image tools ---- */
+const img=src=>new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=src});
+const readF=f=>new Promise((r,j)=>{const x=new FileReader();x.onload=()=>r(x.result);x.onerror=j;x.readAsDataURL(f)});
+function fit(x,i,S,cover){const w=i.width,h=i.height,k=(cover?Math.max:Math.min)(S/w,S/h);x.drawImage(i,(S-w*k)/2,(S-h*k)/2,w*k,h*k)}
+function removeBg(i,S=256){const c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d',{willReadFrequently:true});fit(x,i,S);const d=x.getImageData(0,0,S,S),p=d.data,r=p[0],g=p[1],b=p[2];
+  for(let k=0;k<p.length;k+=4)if(Math.abs(p[k]-r)+Math.abs(p[k+1]-g)+Math.abs(p[k+2]-b)<60)p[k+3]=0;x.putImageData(d,0,0);return c}
+function poly(x,n,r,rot,m){x.beginPath();for(let k=0;k<n;k++){const a=rot+k*2*Math.PI/n;x[k?'lineTo':'moveTo'](m+r*Math.cos(a),m+r*Math.sin(a))}x.closePath()}
+function path(x,k,S,in_=0){const m=S/2,r=m-12-in_;
+  if(k==='circle'){x.beginPath();x.arc(m,m,r,0,7)}
+  else if(k==='round'){x.beginPath();if(x.roundRect)x.roundRect(m-r,m-r,2*r,2*r,r*.3);else x.rect(m-r,m-r,2*r,2*r)}
+  else if(k==='square'){x.beginPath();x.rect(m-r,m-r,2*r,2*r)}
+  else if(k==='hex')poly(x,6,r,0,m);else if(k==='oct')poly(x,8,r,Math.PI/8,m);else if(k==='diamond')poly(x,4,r,0,m)
+  else if(k==='star'){x.beginPath();for(let j=0;j<10;j++){const a=-Math.PI/2+j*Math.PI/5,q=j%2?r*.5:r;x[j?'lineTo':'moveTo'](m+q*Math.cos(a),m+q*Math.sin(a))}x.closePath()}
+  else{x.beginPath();x.moveTo(m-r,m-r);x.lineTo(m+r,m-r);x.lineTo(m+r,m);x.quadraticCurveTo(m+r,m+r*.8,m,m+r);x.quadraticCurveTo(m-r,m+r*.8,m-r,m);x.closePath()}}
+function fillBg(x,t,S){let f;if(t.bg==='none')return;
+  if(t.bg==='solid')f=t.g1;else if(t.bg==='dark')f='#0a0a14';
+  else if(t.bg==='grad'){f=x.createLinearGradient(0,0,S,S);f.addColorStop(0,t.g1);f.addColorStop(1,t.g2)}
+  else if(t.bg==='vn')f='#da251d';else f=t.g1;
+  x.fillStyle=f;x.fillRect(0,0,S,S);
+  if(t.bg==='grid'){x.strokeStyle='#ffffff22';x.lineWidth=1;for(let k=0;k<S;k+=16){x.beginPath();x.moveTo(k,0);x.lineTo(k,S);x.moveTo(0,k);x.lineTo(S,k);x.stroke()}}
+  if(t.bg==='vn'){x.fillStyle='#ffcd00';x.beginPath();for(let j=0;j<10;j++){const a=-Math.PI/2+j*Math.PI/5,q=j%2?S*.12:S*.3;x[j?'lineTo':'moveTo'](S/2+q*Math.cos(a),S/2+q*Math.sin(a))}x.closePath();x.fill()}}
+function render(src,t,S=256){const c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');
+  x.save();if(t.scope==='all'){fillBg(x,t,S)}
+  path(x,t.shape,S);x.clip();if(t.scope!=='all')fillBg(x,t,S);
+  const pad=S*.1,tmp=document.createElement('canvas');tmp.width=tmp.height=S;fit(tmp.getContext('2d'),src,S-pad*2);x.drawImage(tmp,pad,pad);x.restore();
+  const w=+t.w;x.lineJoin='round';
+  if(t.border!=='none'){path(x,t.shape,S);x.lineWidth=w;x.strokeStyle=t.c1;
+    if(t.border==='neon'){x.shadowColor=t.c1;x.shadowBlur=18}
+    if(t.border==='flag'){x.strokeStyle='#da251d'}x.stroke();x.shadowBlur=0;
+    if(t.border==='double'){path(x,t.shape,S,w*1.8);x.lineWidth=Math.max(2,w/2);x.strokeStyle=t.c2;x.stroke()}
+    if(t.border==='flag'){path(x,t.shape,S,w);x.lineWidth=w/2;x.strokeStyle='#ffcd00';x.stroke()}}
+  x.fillStyle=t.c2;x.strokeStyle=t.c2;x.lineWidth=4;x.font='bold 30px sans-serif';x.textAlign='left';
+  if(t.cor==='star'){x.fillText('★',8,32);x.fillText('★',S-38,S-8)}
+  if(t.cor==='flag'){x.fillStyle='#da251d';x.fillRect(8,8,40,28);x.fillStyle='#ffcd00';x.font='bold 22px sans-serif';x.fillText('★',19,31)}
+  if(t.cor==='vf'){const L=34,o=8;[[o,o,1,1],[S-o,o,-1,1],[o,S-o,1,-1],[S-o,S-o,-1,-1]].forEach(([a,b,u,v])=>{x.beginPath();x.moveTo(a+u*L,b);x.lineTo(a,b);x.lineTo(a,b+v*L);x.stroke()})}
+  return c}
+const T={circle:{shape:'circle',border:'none',bg:'none',cor:'none',c1:'#fff',c2:'#fff',g1:'#000',g2:'#000',w:8,scope:'in'},
+ flag:{shape:'round',border:'flag',bg:'none',cor:'none',c1:'#da251d',c2:'#ffcd00',g1:'#000',g2:'#000',w:12,scope:'in'}};
+async function processImg(file,mode,tplId){const i=await img(await readF(file));
+  const t=tplId?tpls.find(p=>p.id==tplId):null;
+  if(t)return render(i,t).toDataURL();
+  if(mode==='nobg')return removeBg(i).toDataURL();
+  if(mode==='circle'||mode==='flag')return render(i,T[mode]).toDataURL();
+  const c=document.createElement('canvas');c.width=c.height=256;fit(c.getContext('2d'),i,256);return c.toDataURL()}
+
+/* ---- table ---- */
+function view(){const q=$('#q').value.trim().toLowerCase();return teams.map((t,i)=>({...t,i})).filter(t=>!q||t.name.toLowerCase().includes(q)||t.ids.join(' ').toLowerCase().includes(q))}
+function draw(){const v=view(),per=+$('#per').value,pages=Math.max(1,Math.ceil(v.length/per));page=Math.min(Math.max(1,page),pages);
+  const rows=v.slice((page-1)*per,page*per);
+  $('#tb').innerHTML=rows.length?rows.map((t,k)=>`<tr data-i="${t.i}"><td>${(page-1)*per+k+1}</td>
+  <td>${t.logo?`<img class="pv" alt="" src="${esc(t.logo)}">`:'<div class="pv"></div>'}</td>
+  <td><input data-f="name" value="${esc(t.name)}"></td><td><input data-f="ids" value="${esc(t.ids.join(', '))}" placeholder="ID1, ID2"></td>
+  <td><input data-f="logo" value="${t.logo.startsWith('data:')?'(ảnh đã tải lên)':esc(t.logo)}" ${t.logo.startsWith('data:')?'readonly':''}></td>
+  <td><input type="file" data-f="file" accept="image/*" style="width:150px"></td>
+  <td><div class="row"><button class="sm dan" data-del>Xóa</button></div></td></tr>`).join(''):'<tr><td colspan="7" class="empty">'+(teams.length?'Không tìm thấy team nào.':'Chưa có team nào. Bấm “Thêm team” để bắt đầu.')+'</td></tr>';
+  $('#pi').textContent=`Trang ${page}/${pages} · ${v.length} team`;
+  countUp($('#s1'),teams.length);countUp($('#s2'),teams.reduce((a,t)=>a+t.ids.length,0));countUp($('#s3'),teams.filter(t=>t.logo).length);countUp($('#s4'),tpls.length)}
+$('#tb').addEventListener('change',async e=>{const tr=e.target.closest('tr'),f=e.target.dataset.f;if(!tr||!f)return;const t=teams[+tr.dataset.i];if(!t)return;
+  try{
+    if(f==='name')t.name=e.target.value.trim();else if(f==='ids')t.ids=e.target.value.split(/[,\s]+/).filter(Boolean);
+    else if(f==='logo')t.logo=e.target.value.trim();else if(f==='file'&&e.target.files[0]){t.logo=await processImg(e.target.files[0],'orig',defTpl)}
+  }catch(err){return toast('Không đọc được ảnh')}
+  save();draw();toast('Đã cập nhật')});
+$('#tb').addEventListener('click',async e=>{if(!e.target.matches('[data-del]'))return;const i=+e.target.closest('tr').dataset.i;
+  if(await confirmBox('Xóa team “'+teams[i].name+'”?')){teams.splice(i,1);save();draw()}});
+$('#q').oninput=()=>{page=1;draw()};$('#per').onchange=()=>{page=1;draw()};
+$('#pp').onclick=()=>{page=Math.max(1,page-1);draw()};$('#pn').onclick=()=>{page++;draw()};
+[['#dID','Xóa tất cả ID của mọi team?',t=>t.ids=[]],['#dLogo','Xóa tất cả logo?',t=>t.logo='']].forEach(([b,m,fn])=>$(b).onclick=async()=>{if(await confirmBox(m)){teams.forEach(fn);save();draw()}});
+$('#dTeam').onclick=async()=>{if(await confirmBox('Xóa TẤT CẢ team? Không thể hoàn tác.')){teams=[];save();draw()}};
+
+/* ---- add many ---- */
+function fillTplSel(){$('#aTpl').innerHTML='<option value="">Không dùng mẫu</option>'+tpls.map(p=>`<option value="${p.id}"${p.id==defTpl?' selected':''}>${esc(p.name)}</option>`).join('')}
+$('#bAdd').onclick=()=>{fillTplSel();open('#mAdd')};$('#aNo').onclick=()=>close('#mAdd');
+$('#aFiles').onchange=e=>{files=[...e.target.files];$('#aInfo').textContent=files.length?`Đã chọn ${files.length} logo – ghép theo thứ tự: ${files.map((f,i)=>(i+1)+'.'+f.name).join(' · ')}`:'Chưa chọn logo.'};
+$('#aOk').onclick=async()=>{const lines=$('#aTx').value.split('\n').map(s=>s.trim()).filter(Boolean);if(!lines.length)return toast('Chưa nhập team nào');
+  const mode=$('#aMode').value,tp=$('#aTpl').value;let n=0;
+  $('#aOk').disabled=true;
+  for(let k=0;k<lines.length;k++){const m=lines[k].split(/\s*\|\s*|\s+-\s+|\s*,\s*(?=\d)/),name=m.shift().trim(),ids=m.join(',').split(/[,\s]+/).filter(Boolean);
+    let logo='';if(files[k]){try{logo=await processImg(files[k],mode,tp)}catch(e){}}
+    teams.push({name,ids,logo});n++}
+  $('#aOk').disabled=false;
+  save();draw();close('#mAdd');$('#aTx').value='';$('#aFiles').value='';files=[];$('#aInfo').textContent='Chưa chọn logo.';toast('Đã thêm '+n+' team')};
+
+/* ---- drive ---- */
+async function driveDirect(link){
+  const m=link.match(/folders\/([\w-]+)/)||link.match(/[?&]id=([\w-]+)/);if(!m)throw new Error('link');
+  const u='https://www.googleapis.com/drive/v3/files?q='+encodeURIComponent(`'${m[1]}' in parents and mimeType contains 'image/' and trashed=false`)+'&fields=files(id,name)&orderBy=name&pageSize=200&key='+encodeURIComponent(DRIVE_KEY);
+  const d=await (await fetch(u)).json();if(!d.files)throw new Error('api');
+  return d.files.map(f=>({name:f.name.replace(/\.[^.]+$/,''),ids:[],logo:'https://drive.google.com/thumbnail?id='+f.id+'&sz=w512'}))}
+$('#bDrive').onclick=()=>open('#mDrive');$('#dNo').onclick=()=>close('#mDrive');
+$('#dOk').onclick=async()=>{const l=$('#dLink').value.trim();if(!/drive\.google\.com/.test(l))return toast('Link Drive không hợp lệ');
+  if(!API_BASE&&!USE_API&&!DRIVE_KEY)return toast('Chưa cấu hình DRIVE_KEY hoặc API_BASE trong mã trang');
+  try{let list;
+    if(API_BASE||USE_API){const r=await fetch(API_BASE+'/api/ht/drive'+(USE_API?'?token='+encodeURIComponent(tok):''),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tok},body:JSON.stringify({link:l})});
+      if(!r.ok)throw 0;list=(await r.json()).teams||[]}
+    else list=await driveDirect(l);
+    list.forEach(t=>teams.push({name:t.name,ids:t.ids||[],logo:t.logo||''}));save();draw();close('#mDrive');toast('Đã thêm '+list.length+' team từ Drive')}
+  catch(e){toast('Lỗi lấy dữ liệu Drive – kiểm tra quyền folder / API key')}};
+$('#bGuide').onclick=()=>open('#mGuide');
+
+/* ---- export / import ---- */
+$('#bExp').onclick=()=>{const b=new Blob([JSON.stringify({v:1,teams,tpls,def:defTpl},null,1)],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(b);a.download='ht-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);toast('Đã xuất file sao lưu')};
+$('#bImp').onclick=()=>$('#impF').click();
+$('#impF').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
+  try{const d=JSON.parse(await f.text());if(!Array.isArray(d.teams))throw 0;
+    d.teams.forEach(t=>teams.push({name:String(t.name||''),ids:Array.isArray(t.ids)?t.ids.map(String):[],logo:String(t.logo||'')}));
+    (d.tpls||[]).forEach(p=>{if(!tpls.some(x=>x.id==p.id))tpls.push(p)});
+    save();draw();toast('Đã nhập '+d.teams.length+' team')}catch(err){toast('File sao lưu không hợp lệ')}};
+
+/* ---- studio ---- */
+let sImg=null;const ids=['shape','bord','bgk','cor','c1','c2','g1','g2','w','scope'];
+const cur=()=>({shape:$('#shape').value,border:$('#bord').value,bg:$('#bgk').value,cor:$('#cor').value,c1:$('#c1').value,c2:$('#c2').value,g1:$('#g1').value,g2:$('#g2').value,w:$('#w').value,scope:$('#scope').value});
+function demo(){const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,256,256);g.addColorStop(0,'#00e5ff');g.addColorStop(1,'#ff2bd6');x.fillStyle=g;x.fillRect(40,40,176,176);x.fillStyle='#07070f';x.font='900 84px sans-serif';x.textAlign='center';x.fillText('HT',128,150);return c}
+function prev(){const c=$('#cv').getContext('2d');c.clearRect(0,0,256,256);c.drawImage(render(sImg||demo(),cur()),0,0)}
+ids.forEach(k=>$('#'+k).addEventListener('input',prev));
+$('#bStudio').onclick=()=>{open('#mStudio');tplList();prev()};
+$('#sDemo').onclick=()=>{sImg=null;prev()};
+$('#sFile').onchange=async e=>{if(e.target.files[0]){try{sImg=await img(await readF(e.target.files[0]));prev()}catch(err){toast('Không đọc được ảnh')}}};
+function tplList(){$('#tpl').innerHTML=tpls.map(p=>`<button class="sm" data-t="${p.id}">${p.id==defTpl?'★ ':''}${esc(p.name)}</button>`).join('')||'<span class="note">Chưa có mẫu nào.</span>'}
+$('#tpl').onclick=e=>{const id=e.target.dataset.t;if(!id)return;const p=tpls.find(x=>x.id==id);if(!p)return;$('#sName').value=p.name;
+  [['shape','shape'],['bord','border'],['bgk','bg'],['cor','cor'],['c1','c1'],['c2','c2'],['g1','g1'],['g2','g2'],['w','w'],['scope','scope']].forEach(([a,b])=>$('#'+a).value=p[b]);prev()};
+$('#sSave').onclick=()=>{const p={...cur(),name:$('#sName').value.trim()||'Mẫu',id:Date.now()};const ex=tpls.findIndex(x=>x.name===p.name);if(ex>=0){p.id=tpls[ex].id;tpls[ex]=p}else tpls.push(p);save();tplList();draw();toast('Đã lưu mẫu')};
+$('#sDef').onclick=()=>{const p=tpls.find(x=>x.name===$('#sName').value.trim());if(!p)return toast('Hãy lưu mẫu trước');defTpl=String(p.id);save();tplList();toast('Đã đặt mặc định')};
+
+/* ---- misc ---- */
+function countUp(el,to){const from=+el.textContent||0;if(from===to){el.textContent=to;return}const t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/700);el.textContent=Math.round(from+(to-from)*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f)})(t0)}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const r=b.getBoundingClientRect(),s=document.createElement('span');s.className='rp';s.style.cssText='left:'+(e.clientX-r.left)+'px;top:'+(e.clientY-r.top)+'px';b.append(s);setTimeout(()=>s.remove(),600)});
+
+/* ---- API sync (chạy khi USE_API = true) ---- */
+const Q='?token='+encodeURIComponent(tok);let pt;
+async function pull(){try{const r=await fetch(API_BASE+'/api/ht/state'+Q);if(!r.ok)throw 0;const d=await r.json();teams=d.teams||[];tpls=d.tpls||[];defTpl=d.def||null;if(d.exp)exp=d.exp;draw()}catch(e){toast('Không tải được dữ liệu – link hết hạn?')}}
+function push(){clearTimeout(pt);pt=setTimeout(async()=>{try{const r=await fetch(API_BASE+'/api/ht/state'+Q,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({teams,tpls,def:defTpl})});if(!r.ok)throw 0}catch(e){toast('Lưu lên bot thất bại')}},400)}
+
+/* ---- seed & start ---- */
+load();
+if(!USE_API&&!teams.length&&!localStorage.getItem('ht_seen')){const cols=[['#00e5ff','#0044ff'],['#ff2bd6','#7a00ff'],['#2dff9a','#008a5a']],nm=['Team Alpha','Team Beta','Team Gamma'];
+  teams=nm.map((n,i)=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,256,256);g.addColorStop(0,cols[i][0]);g.addColorStop(1,cols[i][1]);x.fillStyle=g;x.beginPath();x.arc(128,128,110,0,7);x.fill();x.fillStyle='#fff';x.font='900 100px sans-serif';x.textAlign='center';x.fillText(n.slice(5,6),128,160);return{name:n,ids:[String(100000+i*111),String(200000+i*111)],logo:c.toDataURL()}});
+  try{localStorage.setItem('ht_seen','1')}catch(e){}save()}
+draw();
+if(USE_API)pull();
+if(location.hash==='#taomau')setTimeout(()=>$('#bStudio').click(),300);
+</script>
+</body>
+</html>
